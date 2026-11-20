@@ -1,0 +1,19 @@
+{
+  "name": "mtc-smart-manager",
+  "version": "1.0.0",
+  "description": "MTC Smart Manager - Secure Telecom Banking & Transaction System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "mtc",
+    "telecom",
+    "smart-manager",
+    "transactions",
+    "security"
+  ],
+  "author": "MTC Team",
+  "license": "ISC"
+}

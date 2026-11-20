@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#090814">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <title>MTC Smart Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mobile-viewport">
+        <!-- TOP STATUS / NOTIFICATION BAR (Mobile Style) -->
+        <div class="status-bar">
+            <span class="status-time" id="clockTime">11:22</span>
+            <div class="status-icons">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.57 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+                <span class="battery-text">34%</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 5v14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1V1h4v2h1a2 2 0 0 1 2 2z"/></svg>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 1: AUTHENTICATION / PIN SCREEN         -->
+        <!-- ============================================== -->
+        <div class="app-screen" id="authScreen">
+            <div class="auth-header-bar">
+                <span class="auth-arrow">←</span>
+                <span class="auth-title-text">Media</span>
+            </div>
+            <div class="auth-card-outer">
+                <div class="auth-container">
+                    <div class="auth-shield-badge">
+                        <div class="shield-circle">
+                            <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h1 class="brand-title">MTC Smart<br>Manager</h1>
+                    <p class="brand-subtitle">Secure Login Required</p>
+
+                    <!-- Account Selector / Demo Switcher -->
+                    <div class="user-select-chip" id="userSelectDropdownContainer">
+                        <label class="user-select-label">Account:</label>
+                        <select id="userSelector" class="user-select-field">
+                            <option value="1">Sana'a Hamieh (76937135)</option>
+                            <option value="2">Malak Dbouk (70688012)</option>
+                            <option value="3">Zeinab Hamieh (70721261)</option>
+                        </select>
+                    </div>
+
+                    <div class="pin-entry-section">
+                        <div class="pin-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <span>Enter 4-Digit PIN</span>
+                        </div>
+
+                        <div class="pin-input-box" id="pinInputBox">
+                            <span class="pin-display-text" id="pinDisplay">00|00</span>
+                            <button class="pin-eye-toggle" id="pinEyeBtn" type="button" title="Toggle visibility">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Numeric Keypad for fast input -->
+                        <div class="auth-keypad">
+                            <button type="button" class="num-key" data-key="1">1</button>
+                            <button type="button" class="num-key" data-key="2">2</button>
+                            <button type="button" class="num-key" data-key="3">3</button>
+                            <button type="button" class="num-key" data-key="4">4</button>
+                            <button type="button" class="num-key" data-key="5">5</button>
+                            <button type="button" class="num-key" data-key="6">6</button>
+                            <button type="button" class="num-key" data-key="7">7</button>
+                            <button type="button" class="num-key" data-key="8">8</button>
+                            <button type="button" class="num-key" data-key="9">9</button>
+                            <button type="button" class="num-key num-clear" id="keypadClear">C</button>
+                            <button type="button" class="num-key" data-key="0">0</button>
+                            <button type="button" class="num-key num-back" id="keypadBack">⌫</button>
+                        </div>
+
+                        <button class="auth-submit-btn" id="loginSubmitBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <span id="loginBtnText">Enter 4 Digits</span>
+                        </button>
+
+                        <div class="auth-footer-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            <span>256-bit Encrypted • Secure Connection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 2: HOME SCREEN                         -->
+        <!-- ============================================== -->
+        <div class="app-screen hidden" id="homeScreen">
+            <!-- App Top Header -->
+            <div class="home-top-bar">
+                <div class="user-greeting">
+                    <span class="brand-mini">MTC Smart</span>
+                    <h2 class="page-title">Manager</h2>
+                    <div class="user-info-text">
+                        <span id="homeUserName">Sana'a Hamieh</span>
+                        <span id="homeUserPhone">76937135</span>
+                    </div>
+                </div>
+
+                <div class="header-action-icons">
+                    <!-- Security shield -->
+                    <button class="icon-btn shield-btn" id="openSecurityModalBtn" title="Security Center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </button>
+                    <!-- Bell notifications with red badge -->
+                    <button class="icon-btn bell-btn" id="openAlertsModalBtn" title="Alerts">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="bell-badge-dot" id="bellBadgeDot"></span>
+                    </button>
+                    <!-- Lock / logout button -->
+                    <button class="icon-btn lock-app-btn" id="lockAppBtn" title="Lock App">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Total Balance Card -->
+            <div class="main-balance-card">
+                <span class="balance-card-label">Total Balance</span>
+                <div class="balance-amount-row">
+                    <span class="balance-currency">$</span>
+                    <span class="balance-value" id="homeTotalBalance">100.00</span>
+                </div>
+                <div class="balance-badges-row">
+                    <span class="status-badge badge-active">Active</span>
+                    <span class="status-badge badge-expiry">Expires: 30 days</span>
+                </div>
+            </div>
+
+            <!-- Two Metric Cards (Data & Minutes) -->
+            <div class="metrics-grid">
+                <!-- Data Card -->
+                <div class="metric-card metric-data">
+                    <div class="metric-header">
+                        <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                            <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                            <line x1="12" y1="20" x2="12.01" y2="20"/>
+                        </svg>
+                        <span class="status-dot dot-green"></span>
+                    </div>
+                    <span class="metric-label">Data</span>
+                    <span class="metric-value" id="homeDataBalance">3.0 GB</span>
+                </div>
+
+                <!-- Minutes Card -->
+                <div class="metric-card metric-minutes">
+                    <div class="metric-header">
+                        <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                            <line x1="12" y1="18" x2="12.01" y2="18"/>
+                        </svg>
+                        <span class="status-dot dot-green"></span>
+                    </div>
+                    <span class="metric-label">Minutes</span>
+                    <span class="metric-value" id="homeMinutesBalance">450 min</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="quick-actions-section">
+                <div class="section-title">
+                    <svg class="action-bolt-icon" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    <span>Quick Actions</span>
+                </div>
+
+                <div class="actions-grid">
+                    <!-- 1. Recharge -->
+                    <button class="action-btn action-recharge" id="btnActionRecharge">
+                        <div class="action-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                        </div>
+                        <span class="action-name">Recharge</span>
+                    </button>
+
+                    <!-- 2. Transfer -->
+                    <button class="action-btn action-transfer" id="btnActionTransfer">
+                        <div class="action-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </div>
+                        <span class="action-name">Transfer</span>
+                    </button>
+
+                    <!-- 3. Convert -->
+                    <button class="action-btn action-convert" id="btnActionConvert">
+                        <div class="action-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="17 1 21 5 17 9"/>
+                                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                <polyline points="7 23 3 19 7 15"/>
+                                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                            </svg>
+                        </div>
+                        <span class="action-name">Convert</span>
+                    </button>
+
+                    <!-- 4. Packages -->
+                    <button class="action-btn action-packages" id="btnActionPackages">
+                        <div class="action-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                <polyline points="17 6 23 6 23 12"/>
+                            </svg>
+                        </div>
+                        <span class="action-name">Packages</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 3: PACKAGES SCREEN                     -->
+        <!-- ============================================== -->
+        <div class="app-screen hidden" id="packagesScreen">
+            <div class="screen-sub-header">
+                <button class="back-link" id="btnPackagesBack">
+                    <span>‹ Back to Home</span>
+                </button>
+            </div>
+
+            <div class="packages-header-text">
+                <h2 class="screen-main-title">Available Packages</h2>
+                <p class="screen-sub-desc">Choose the perfect plan for your needs</p>
+            </div>
+
+            <div class="packages-category-label">
+                <span class="category-icon">📱</span>
+                <span>Data Packages</span>
+            </div>
+
+            <div class="packages-list" id="packagesContainer">
+                <!-- Dynamically populated or fallback templates -->
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 4: ACTIVITY / TRANSACTION HISTORY      -->
+        <!-- ============================================== -->
+        <div class="app-screen hidden" id="activityScreen">
+            <div class="activity-top-header">
+                <span class="screen-tag">Activity</span>
+                <h2 class="activity-title">Transaction History</h2>
+                <p class="activity-account-info">Account: <span id="activityAccountDesc">Sana'a Hamieh (76937135)</span></p>
+            </div>
+
+            <!-- Team Members Section -->
+            <div class="team-members-section">
+                <div class="team-title-row">
+                    <svg class="pulse-icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    <span>Team Members</span>
+                </div>
+
+                <div class="team-members-list" id="teamMembersList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Recent Transactions Section -->
+            <div class="recent-tx-section">
+                <h3 class="recent-tx-title">Recent Transactions</h3>
+                <div class="transactions-list" id="transactionsList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 5: SETTINGS SCREEN                     -->
+        <!-- ============================================== -->
+        <div class="app-screen hidden" id="settingsScreen">
+            <div class="settings-top-header">
+                <h2 class="settings-title">Settings</h2>
+            </div>
+
+            <div class="settings-cards-group">
+                <!-- Two-Factor Authentication -->
+                <div class="setting-item-card">
+                    <div class="setting-icon-box purple-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div class="setting-details">
+                        <span class="setting-name">Two-Factor Authentication</span>
+                        <span class="setting-desc">Add extra security layer with SMS codes</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting2FAToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Auto-Lock Timer -->
+                <div class="setting-item-card col-layout">
+                    <div class="setting-top-row">
+                        <div class="setting-icon-box purple-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div class="setting-details">
+                            <span class="setting-name">Auto-Lock Timer</span>
+                            <span class="setting-desc">Lock app after inactivity</span>
+                        </div>
+                        <span class="setting-value-badge" id="autoLockValueBadge">60s</span>
+                    </div>
+                    <div class="slider-row">
+                        <span class="slider-min-label">30s</span>
+                        <input type="range" min="30" max="300" step="30" value="60" class="custom-range" id="autoLockSlider">
+                        <span class="slider-max-label">5min</span>
+                    </div>
+                </div>
+
+                <!-- Transaction Security Header -->
+                <div class="settings-section-divider">
+                    <span class="sec-gold-icon">💰</span>
+                    <span class="sec-header-title">Transaction Security</span>
+                </div>
+
+                <!-- Daily Transfer Limit -->
+                <div class="setting-item-card col-layout">
+                    <div class="setting-top-row">
+                        <div class="setting-icon-box green-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="setting-details">
+                            <span class="setting-name">Daily Transfer Limit</span>
+                            <span class="setting-desc">Maximum daily spending</span>
+                        </div>
+                        <span class="setting-value-badge green-badge" id="dailyLimitValueBadge">$50</span>
+                    </div>
+                    <div class="slider-row">
+                        <span class="slider-min-label">$10</span>
+                        <input type="range" min="10" max="500" step="10" value="50" class="custom-range range-green" id="dailyLimitSlider">
+                        <span class="slider-max-label">$500</span>
+                    </div>
+                </div>
+
+                <!-- Transaction Verification -->
+                <div class="setting-item-card">
+                    <div class="setting-icon-box purple-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                    </div>
+                    <div class="setting-details">
+                        <span class="setting-name">Transaction Verification</span>
+                        <span class="setting-desc">Require PIN for all transfers</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="settingPinVerifyToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- BOTTOM NAVIGATION BAR (Home, Activity, Settings) -->
+        <!-- ============================================== -->
+        <nav class="bottom-nav" id="bottomNavBar">
+            <button class="nav-tab active" data-screen="homeScreen" id="navHome">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Home</span>
+            </button>
+
+            <button class="nav-tab" data-screen="activityScreen" id="navActivity">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <span>Activity</span>
+            </button>
+
+            <button class="nav-tab" data-screen="settingsScreen" id="navSettings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- ============================================== -->
+        <!-- MODAL 1: QUICK RECHARGE MODAL                 -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="rechargeModal">
+            <div class="modal-dialog recharge-dialog">
+                <div class="modal-header-row">
+                    <div class="modal-title-wrap">
+                        <svg class="modal-bolt-icon" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        <h3 class="modal-title">Quick Recharge</h3>
+                    </div>
+                    <button class="modal-close-btn" id="closeRechargeModalBtn">✕</button>
+                </div>
+
+                <div class="recharge-grid">
+                    <button class="recharge-amount-card" data-amount="5">
+                        <span>$5</span>
+                    </button>
+                    <button class="recharge-amount-card" data-amount="10">
+                        <span>$10</span>
+                    </button>
+                    <button class="recharge-amount-card" data-amount="20">
+                        <span>$20</span>
+                    </button>
+                    <button class="recharge-amount-card" data-amount="50">
+                        <span>$50</span>
+                    </button>
+                </div>
+
+                <p class="recharge-modal-footer-note">Select amount to recharge via SMS</p>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MODAL 2: TRANSFER BALANCE MODAL               -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="transferModal">
+            <div class="modal-dialog transfer-dialog">
+                <div class="modal-header-row">
+                    <div class="modal-title-wrap">
+                        <svg class="modal-plane-icon" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                        <h3 class="modal-title">Transfer Balance</h3>
+                    </div>
+                    <button class="modal-close-btn" id="closeTransferModalBtn">✕</button>
+                </div>
+
+                <div class="transfer-form">
+                    <div class="form-field-group">
+                        <label class="field-label">Amount ($)</label>
+                        <input type="number" step="1" min="1" class="field-input big-input" id="transferAmountInput" value="55">
+                        <span class="field-help" id="transferAvailableLabel">Available: $100.00</span>
+                    </div>
+
+                    <div class="form-field-group">
+                        <label class="field-label">Recipient Number</label>
+                        <select class="field-select" id="recipientSelect">
+                            <!-- Populated with team members -->
+                        </select>
+                        <input type="text" class="field-input" id="recipientPhoneInput" value="70721261" placeholder="Enter recipient phone">
+                    </div>
+
+                    <!-- Live Calculation Card -->
+                    <div class="transfer-preview-card">
+                        <div class="preview-row">
+                            <span class="preview-label">Your Balance</span>
+                            <span class="preview-calc" id="transferCalcRow">$100.00 → $45.00</span>
+                        </div>
+                        <div class="preview-row">
+                            <span class="preview-label">Recipient Gets</span>
+                            <span class="preview-green" id="transferRecipientGets">+$55.00</span>
+                        </div>
+                    </div>
+
+                    <button class="confirm-transfer-btn" id="confirmTransferBtn">
+                        Confirm Transfer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MODAL 3: DOLLAR -> DATA CONVERTER MODAL       -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="convertModal">
+            <div class="modal-dialog convert-dialog">
+                <div class="modal-header-row">
+                    <div class="modal-title-wrap">
+                        <svg class="modal-convert-icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                            <polyline points="17 1 21 5 17 9"/>
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                            <polyline points="7 23 3 19 7 15"/>
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                        <h3 class="modal-title">Dollar → Data</h3>
+                    </div>
+                    <button class="modal-close-btn" id="closeConvertModalBtn">✕</button>
+                </div>
+
+                <div class="convert-body">
+                    <span class="convert-label">Amount to Convert ($)</span>
+                    <input type="range" min="1" max="20" step="1" value="9" class="custom-range" id="convertSlider">
+                    <div class="convert-amount-huge" id="convertHugeDisplay">$9.00</div>
+
+                    <!-- Exchange Preview Box -->
+                    <div class="exchange-preview-box">
+                        <div class="exchange-side green-side">
+                            <span class="dollar-sign">$</span>
+                            <span class="exchange-val" id="convertDollarSide">$9.00</span>
+                        </div>
+                        <div class="exchange-arrows-center">⇄</div>
+                        <div class="exchange-side blue-side">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                                <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                                <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                                <line x1="12" y1="20" x2="12.01" y2="20"/>
+                            </svg>
+                            <span class="exchange-val" id="convertDataSide">900 MB</span>
+                        </div>
+                    </div>
+                    <p class="convert-rate-note">Rate: $1 = 100MB • Validity: 7 days</p>
+
+                    <button class="convert-submit-btn" id="submitConvertBtn">Convert Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MODAL 4: TRANSACTION SUCCESSFUL RECEIPT       -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="receiptModal">
+            <div class="modal-dialog receipt-dialog">
+                <div class="receipt-header-nav">
+                    <span class="receipt-tag">Transaction Confirmation</span>
+                    <button class="modal-close-btn" id="closeReceiptModalBtn">✕</button>
+                </div>
+
+                <div class="receipt-center-badge">
+                    <div class="success-check-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h2 class="receipt-title">Transaction Successful</h2>
+                    <p class="receipt-subtitle">Your digital receipt is ready</p>
+                </div>
+
+                <!-- Digital Receipt Card -->
+                <div class="digital-receipt-card">
+                    <div class="receipt-id-row">
+                        <div class="receipt-id-label-wrap">
+                            <svg class="receipt-doc-icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            <span class="receipt-id-label">Receipt ID</span>
+                        </div>
+                        <span class="receipt-id-number" id="receiptIdVal">TXN0571337504</span>
+                    </div>
+
+                    <div class="receipt-divider"></div>
+
+                    <div class="receipt-info-row">
+                        <span class="info-k">Type</span>
+                        <span class="info-v" id="receiptTypeVal">Transfer</span>
+                    </div>
+
+                    <div class="receipt-info-row">
+                        <span class="info-k">Date &amp; Time</span>
+                        <span class="info-v" id="receiptDateVal">Feb 8, 2026, 7:22 PM</span>
+                    </div>
+
+                    <div class="receipt-info-row">
+                        <span class="info-k">Status</span>
+                        <span class="info-v status-green" id="receiptStatusVal">• Success</span>
+                    </div>
+
+                    <!-- Highlighted Green Box -->
+                    <div class="receipt-amount-box">
+                        <span class="amount-box-label" id="receiptAmountLabel">Amount Transferred</span>
+                        <span class="amount-box-val" id="receiptAmountVal">$55.00</span>
+                    </div>
+
+                    <div class="receipt-info-row receipt-party">
+                        <span class="party-k">From</span>
+                        <span class="party-v" id="receiptFromVal">Sana'a Hamieh (76937135)</span>
+                    </div>
+
+                    <div class="receipt-info-row receipt-party">
+                        <span class="party-k">To</span>
+                        <span class="party-v" id="receiptToVal">Zeinab Hamieh (70721261)</span>
+                    </div>
+                </div>
+
+                <button class="receipt-done-btn" id="receiptDoneBtn">Done</button>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MODAL 5: SECURITY CENTER & AUDIT LOGS         -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="securityModal">
+            <div class="modal-dialog security-dialog">
+                <div class="modal-header-row">
+                    <div class="modal-title-wrap">
+                        <svg class="modal-shield-icon" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <h3 class="modal-title">Security Center</h3>
+                    </div>
+                    <button class="modal-close-btn" id="closeSecurityModalBtn">✕</button>
+                </div>
+
+                <div class="security-status-overview">
+                    <div class="sec-stat-pill">
+                        <span class="sec-stat-title">Defense Status</span>
+                        <span class="sec-stat-value green">Active Protection</span>
+                    </div>
+                    <div class="sec-stat-pill">
+                        <span class="sec-stat-title">Encryption</span>
+                        <span class="sec-stat-value" id="secEncryptionVal">AES-256</span>
+                    </div>
+                </div>
+
+                <h4 class="sec-sub-title">Recent Security Audit Logs</h4>
+                <div class="sec-logs-list" id="secLogsList">
+                    <!-- Dynamic logs -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MODAL 6: SECURITY ALERTS MODAL                -->
+        <!-- ============================================== -->
+        <div class="modal-backdrop hidden" id="alertsModal">
+            <div class="modal-dialog alerts-dialog">
+                <div class="modal-header-row">
+                    <div class="modal-title-wrap">
+                        <svg class="modal-bell-icon" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <h3 class="modal-title">Security Alerts</h3>
+                    </div>
+                    <button class="modal-close-btn" id="closeAlertsModalBtn">✕</button>
+                </div>
+
+                <div class="alerts-list" id="alertsListContainer">
+                    <!-- Dynamic alerts -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification Popups -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
